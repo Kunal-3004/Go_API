@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitMap | {{.Owner}}/{{.Repo}}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>Analyzing Repository...</p>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>GitMap</h2>
+            <p>{{.Owner}} / {{.Repo}}</p>
+        </div>
+        <div class="sidebar-content">
+            <div class="search-group">
+                <label>Find File</label>
+                <input type="text" id="search-input" placeholder="Search file name..." onkeyup="if(event.key==='Enter') searchNode()">
+                <div style="display: flex; gap: 5px;">
+                    <button class="btn btn-primary" onclick="searchNode()">Locate File</button>
+                    <button class="btn btn-outline" onclick="clearSearch()">Clear</button>
+                </div>
+                <div id="stats" class="stats-text" style="display: none;"></div>
+                <hr>
+                <label>View Controls</label>
+                <button class="btn btn-outline" onclick="toggleRotation()">Rotate Layout</button>
+                <button class="btn btn-outline" onclick="expandAll()">Expand All</button>
+                <button class="btn btn-outline" onclick="collapseAll()">Collapse All</button>
+                <button class="btn btn-outline" onclick="resetZoom()">Reset Camera</button>
+                <hr>
+                <details class="legend-dropdown">
+                    <summary>Language Legend <span class="arrow">▼</span></summary>
+                    <div id="dynamic-legend" class="legend-container">
+                        </div>
+                </details>
+                <hr>
+                <label>Export Project Map</label>
+                <div style="display: flex; gap: 5px;">
+                    <button class="btn btn-success" onclick="downloadPNG()">Download PNG</button>
+                    <button class="btn btn-outline" onclick="downloadSVG()">SVG</button>
+                </div>
+            </div>
+            <div id="stats" class="stats-text"></div>
+        </div>
+    </aside>
+
+    <main id="main-canvas"></main>
+
+    <script>
+        window.treeData = {{.TreeJSON}};
+        window.owner = "{{.Owner}}";
+        window.repo = "{{.Repo}}";
+        window.branch = "{{.Branch}}";
+    </script>
+    <script src="/static/script.js"></script>
+</body>
+</html>
