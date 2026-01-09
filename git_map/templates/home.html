@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitMap | Visualize Your Code</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .sidebar { display: none; }
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+        .home-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Vertical Center */
+            align-items: center;     /* Horizontal Center */
+            width: 100%;
+            height: 100%;           
+            background: var(--bg);
+            position: fixed;        
+            top: 0;
+            left: 0;
+        }
+        .search-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1); 
+            width: 90%;             /* Mobile friendly */
+            max-width: 400px;
+            transition: transform 0.3s ease;
+        }
+
+        .search-card:hover {
+            transform: translateY(-5px); 
+        }
+        .home-logo { font-size: 48px; color: var(--primary); margin-bottom: 10px; font-weight: bold; }
+        .search-card h1 { margin-bottom: 20px; font-size: 24px; color: #333; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <div class="home-logo">📁 GitMap</div>
+        <div class="search-card">
+            <h1>Visualize Repository</h1>
+            <div class="input-group">
+                <label>GitHub Owner</label>
+                <input type="text" id="owner" placeholder="e.g. google">
+            </div>
+            <div class="input-group">
+                <label>Repository Name</label>
+                <input type="text" id="repo" placeholder="e.g. go">
+            </div>
+            <button class="btn btn-primary" onclick="goToVisualize()">Generate Map</button>
+        </div>
+    </div>
+
+    <script>
+        function goToVisualize() {
+        const owner = document.getElementById('owner').value;
+        const repo = document.getElementById('repo').value;
+        
+        if (owner && repo) {
+            window.location.href = `/visualize?owner=${owner}&repo=${repo}`;
+        } else {
+            alert("Please fill both fields");
+        }
+}
+    </script>
+</body>
+</html>
