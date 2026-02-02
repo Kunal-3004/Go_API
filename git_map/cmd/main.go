@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -9,6 +10,8 @@ import (
 
 	"git_map/internal/github"
 	"git_map/internal/tree"
+
+	"github.com/joho/godotenv"
 )
 
 // var (
@@ -17,11 +20,14 @@ import (
 // )
 
 func main() {
+	godotenv.Load()
 
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	token := os.Getenv("token")
+	token := os.Getenv("GIT_TOKEN")
 	http.HandleFunc("/", handleHome)
+
+	log.Printf(token)
 
 	http.HandleFunc("/visualize", handleVisualize)
 
@@ -41,7 +47,7 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 func handleVisualize(w http.ResponseWriter, r *http.Request) {
 	owner := r.URL.Query().Get("owner")
 	repo := r.URL.Query().Get("repo")
-	token := os.Getenv("token")
+	token := os.Getenv("GIT_TOKEN")
 	// cacheKey := owner + "/" + repo
 
 	// cacheLock.RLock()
@@ -62,7 +68,10 @@ func handleVisualize(w http.ResponseWriter, r *http.Request) {
 	// } else {
 	files, err = github.GetDetailedRepoStructure(owner, repo, token)
 	if err != nil {
-		http.Error(w, "GitHub Error or Rate Limit", 500)
+
+		log.Printf("Detailed GitHub Error: %v", err)
+
+		http.Error(w, fmt.Sprintf("GitHub Error: %v", err), 500)
 		return
 	}
 	// cacheLock.Lock()
