@@ -27,8 +27,6 @@ func main() {
 	token := os.Getenv("token")
 	http.HandleFunc("/", handleHome)
 
-	log.Printf(token)
-
 	http.HandleFunc("/visualize", handleVisualize)
 
 	log.Printf("🚀 Server starting on http://localhost:8080/visualize?owner=OWNER&repo=REPO&token=%s\n", token)
@@ -48,6 +46,7 @@ func handleVisualize(w http.ResponseWriter, r *http.Request) {
 	owner := r.URL.Query().Get("owner")
 	repo := r.URL.Query().Get("repo")
 	token := os.Getenv("token")
+	log.Printf("DEBUG: Visualizing %s/%s with token length: %d", owner, repo, len(token))
 	// cacheKey := owner + "/" + repo
 
 	// cacheLock.RLock()
