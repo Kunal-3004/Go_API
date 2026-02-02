@@ -24,7 +24,7 @@ func main() {
 
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	token := os.Getenv("GIT_TOKEN")
+	token := os.Getenv("token")
 	http.HandleFunc("/", handleHome)
 
 	log.Printf(token)
@@ -47,7 +47,7 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 func handleVisualize(w http.ResponseWriter, r *http.Request) {
 	owner := r.URL.Query().Get("owner")
 	repo := r.URL.Query().Get("repo")
-	token := os.Getenv("GIT_TOKEN")
+	token := os.Getenv("token")
 	// cacheKey := owner + "/" + repo
 
 	// cacheLock.RLock()
